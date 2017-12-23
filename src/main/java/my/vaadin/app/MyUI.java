@@ -37,19 +37,32 @@ public class MyUI extends UI {
 	@Override
 	protected void init(VaadinRequest vaadinRequest) {
 		usernameText.setPlaceholder("enter username");
-		usernameText.addValueChangeListener(e -> username = e.getValue());
 		usernameText.setValueChangeMode(ValueChangeMode.LAZY);
+		usernameText.addValueChangeListener(e -> {
+			username = e.getValue();
+			checkAndEnableSubmitButton();
+		});
 
 		passwordText.setPlaceholder("enter password");
-		passwordText.addValueChangeListener(e -> password = e.getValue());
 		passwordText.setValueChangeMode(ValueChangeMode.LAZY);
+		passwordText.addValueChangeListener(e -> {
+			password = e.getValue();
+			checkAndEnableSubmitButton();
+		});
 
 		submitButton.setCaption("Submit");
+		submitButton.setEnabled(false);
 		submitButton.addClickListener(e -> validUsernameAndPassword());
 
 		final VerticalLayout layout = new VerticalLayout();
 		layout.addComponents(usernameText, passwordText, submitButton);
 		setContent(layout);
+	}
+
+	private void checkAndEnableSubmitButton() {
+		if (!StringUtils.isNullOrEmpty(username) && !StringUtils.isNullOrEmpty(password)) {
+			submitButton.setEnabled(true);
+		}
 	}
 
 	private void validUsernameAndPassword() {
