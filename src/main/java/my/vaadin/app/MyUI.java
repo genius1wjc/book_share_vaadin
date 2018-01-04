@@ -13,6 +13,13 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
+import model.Student;
+import util.StringUtils;
+
+import static util.StudentDbUtil.*;
+
+import java.util.List;
+
 /**
  * This UI is the application entry point. A UI may either represent a browser
  * window (or tab) or some part of an HTML page where a Vaadin application is
@@ -25,7 +32,7 @@ import com.vaadin.ui.VerticalLayout;
 @Theme("mytheme")
 public class MyUI extends UI {
 
-	private static final long serialVersionUID = -768836224971950051L;
+	private static final long serialVersionUID = 1L;
 
 	private TextField usernameText = new TextField();
 	private PasswordField passwordText = new PasswordField();
@@ -52,7 +59,7 @@ public class MyUI extends UI {
 
 		submitButton.setCaption("Submit");
 		submitButton.setEnabled(false);
-		submitButton.addClickListener(e -> validUsernameAndPassword());
+		submitButton.addClickListener(e -> validateUsernameAndPassword());
 
 		final VerticalLayout layout = new VerticalLayout();
 		layout.addComponents(usernameText, passwordText, submitButton);
@@ -65,13 +72,41 @@ public class MyUI extends UI {
 		}
 	}
 
-	private void validUsernameAndPassword() {
+	private void validateUsernameAndPassword() {
+		try {
+			// For now, test database connection and JPA
+			// Create two Students
+			create(1, "Alice", 22); // Alice will get an id 1
+			create(2, "Bob", 20); // Bob will get an id 2
+			create(3, "Charlibbe", 25); // Charlie will get an id 3
 
+			// Update the age of Bob using the id
+			update(2, "Bob", 25);
+
+			// Delete the Alice from database
+			delete(1);
+
+			// Print all the Students
+			List<Student> students = readAll();
+			if (students != null) {
+				for (Student student : students) {
+					System.out.println(student);
+				}
+			}
+
+		} catch (Exception e) {
+			int a = 0;
+			int b = a + 1;
+			int c = b;
+
+		} finally {
+			closeDb();
+		}
 	}
 
 	@WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
 	@VaadinServletConfiguration(ui = MyUI.class, productionMode = false)
 	public static class MyUIServlet extends VaadinServlet {
-		private static final long serialVersionUID = 2339094934408237194L;
+		private static final long serialVersionUID = 1L;
 	}
 }

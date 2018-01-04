@@ -1,8 +1,8 @@
-package my.vaadin.app;
+package util;
 
 import javax.annotation.Nullable;
 
-public class StringUtils {
+public final class StringUtils {
 
 	private StringUtils() {
 		// Prevent instantiation of this class
