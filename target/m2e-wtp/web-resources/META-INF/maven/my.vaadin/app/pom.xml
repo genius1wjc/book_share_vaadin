@@ -89,6 +89,11 @@
 			<artifactId>hibernate-entitymanager</artifactId>
 			<version>5.2.6.Final</version>
 		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.1.7</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -134,6 +139,16 @@
 							</includes>
 						</fileset>
 					</filesets>
+				</configuration>
+			</plugin>
+			<!-- This plugin is used to set the Java version 1.8 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.5.1</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 

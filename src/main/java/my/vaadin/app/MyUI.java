@@ -74,19 +74,14 @@ public class MyUI extends UI {
 
 	private void validateUsernameAndPassword() {
 		try {
-			// For now, test database connection and JPA
-			// Create two Students
 			create(1, "Alice", 22); // Alice will get an id 1
 			create(2, "Bob", 20); // Bob will get an id 2
 			create(3, "Charlibbe", 25); // Charlie will get an id 3
 
-			// Update the age of Bob using the id
 			update(2, "Bob", 25);
 
-			// Delete the Alice from database
 			delete(1);
 
-			// Print all the Students
 			List<Student> students = readAll();
 			if (students != null) {
 				for (Student student : students) {
@@ -95,9 +90,8 @@ public class MyUI extends UI {
 			}
 
 		} catch (Exception e) {
-			int a = 0;
-			int b = a + 1;
-			int c = b;
+			System.out.println("Exception");
+			e.printStackTrace();
 
 		} finally {
 			closeDb();

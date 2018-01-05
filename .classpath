@@ -29,5 +29,12 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="org.eclipse.jdt.annotation_2.1.100.v20170511-1408.jar"/>
+	<classpathentry kind="src" output="target/classes" path="target/generated-resources/gwt">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="ignore_optional_problems" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
