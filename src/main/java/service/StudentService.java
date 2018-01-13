@@ -1,20 +1,17 @@
-package util;
+package service;
+
+import static constant.CommonConstants.ENTITY_MANAGER_FACTORY;
 
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
 
 import model.Student;
 
-public final class StudentDbUtil {
+public final class StudentService {
 
-	private static final EntityManagerFactory ENTITY_MANAGER_FACTORY = Persistence
-			.createEntityManagerFactory("JavaHelps");
-
-	private StudentDbUtil() {
+	private StudentService() {
 		// Prevent instantiation of this class
 	}
 

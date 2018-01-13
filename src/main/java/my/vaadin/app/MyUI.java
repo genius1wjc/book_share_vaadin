@@ -16,7 +16,7 @@ import com.vaadin.ui.VerticalLayout;
 import model.Student;
 import util.StringUtils;
 
-import static util.StudentDbUtil.*;
+import static service.StudentService.*;
 
 import java.util.List;
 
