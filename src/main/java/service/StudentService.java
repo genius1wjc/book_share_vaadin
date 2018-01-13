@@ -34,9 +34,9 @@ public final class StudentService {
 
 			// Create a new Student object
 			Student stu = new Student();
-			stu.setId(id);
-			stu.setName(name);
-			stu.setAge(age);
+			stu.id = id;
+			stu.name = name;
+			stu.age = age;
 
 			// Save the student object
 			manager.persist(stu);
@@ -153,8 +153,8 @@ public final class StudentService {
 			Student stu = manager.find(Student.class, id);
 
 			// Change the values
-			stu.setName(name);
-			stu.setAge(age);
+			stu.name = name;
+			stu.age = age;
 
 			// Update the student
 			manager.persist(stu);

@@ -14,38 +14,14 @@ public class Student implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-    @Column(name = "student_id", unique = true)
-    private int id;
+    @Column(name = "id", unique = true)
+	public int id;
 
-    @Column(name = "student_name", nullable = false)
-    private String name;
+    @Column(name = "name", nullable = false)
+    public String name;
 
-    @Column(name = "student_age", nullable = false)
-    private int age;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
+    @Column(name = "age", nullable = false)
+    public int age;
 
     @Override
     public String toString() {
