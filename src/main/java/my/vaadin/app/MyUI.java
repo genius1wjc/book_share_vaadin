@@ -74,14 +74,6 @@ public class MyUI extends UI {
 
 	private void validateUsernameAndPassword() {
 		try {
-			create(1, "Alice", 22); // Alice will get an id 1
-			create(2, "Bob", 20); // Bob will get an id 2
-			create(3, "Charlibbe", 25); // Charlie will get an id 3
-
-			update(2, "Bob", 25);
-
-			delete(1);
-
 			List<Student> students = readAll();
 			if (students != null) {
 				for (Student student : students) {
