@@ -7,16 +7,16 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
-import model.Borrower;
+import model.Lender;
 
-public final class BorrowerService {
+public final class LenderService {
 
-	private BorrowerService() {
+	private LenderService() {
 		// Prevent instantiation of this class
 	}
 
 	/**
-	 * Create a new Borrower.
+	 * Create a new Lender.
 	 */
 	public static void create(long id, @Nonnull String email, @Nonnull String name, @Nonnull String username,
 			@Nonnull String password) {
@@ -26,8 +26,8 @@ public final class BorrowerService {
 		try {
 			transaction = manager.getTransaction();
 			transaction.begin();
-			Borrower borrower = new Borrower(id, email, name, username, password);
-			manager.persist(borrower);
+			Lender lender = new Lender(id, email, name, username, password);
+			manager.persist(lender);
 			transaction.commit();
 		} catch (Exception ex) {
 			if (transaction != null) {
@@ -40,13 +40,13 @@ public final class BorrowerService {
 	}
 
 	/**
-	 * Find a borrower by username and password.
+	 * Find a lender by username and password.
 	 * 
-	 * @return a List of Borrowers
+	 * @return a List of Lenders
 	 */
-	public static Borrower find(@Nonnull String username, @Nonnull String password) {
+	public static Lender find(@Nonnull String username, @Nonnull String password) {
 
-		Borrower borrower = null;
+		Lender lender = null;
 
 		EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
 		EntityTransaction transaction = null;
@@ -55,10 +55,10 @@ public final class BorrowerService {
 			transaction = manager.getTransaction();
 			transaction.begin();
 			Query query = manager
-					.createQuery("SELECT b FROM Borrower b WHERE b.mUsername = :username AND b.mPassword = :password");
+					.createQuery("SELECT b FROM Lender b WHERE b.mUsername = :username AND b.mPassword = :password");
 			query.setParameter("username", username);
 			query.setParameter("password", password);
-			borrower = (Borrower) query.getSingleResult();
+			lender = (Lender) query.getSingleResult();
 			transaction.commit();
 		} catch (Exception ex) {
 			if (transaction != null) {
@@ -68,11 +68,11 @@ public final class BorrowerService {
 		} finally {
 			manager.close();
 		}
-		return borrower;
+		return lender;
 	}
 
 	/**
-	 * Delete the existing Borrower.
+	 * Delete the existing Lender.
 	 * 
 	 * @param id
 	 */
@@ -83,8 +83,8 @@ public final class BorrowerService {
 		try {
 			transaction = manager.getTransaction();
 			transaction.begin();
-			Borrower borrower = manager.find(Borrower.class, id);
-			manager.remove(borrower);
+			Lender lender = manager.find(Lender.class, id);
+			manager.remove(lender);
 			transaction.commit();
 		} catch (Exception ex) {
 			if (transaction != null) {
@@ -97,7 +97,7 @@ public final class BorrowerService {
 	}
 
 	/**
-	 * Update the existing Borrower.
+	 * Update the existing Lender.
 	 * 
 	 * @param id
 	 * @param name
@@ -109,9 +109,9 @@ public final class BorrowerService {
 		try {
 			transaction = manager.getTransaction();
 			transaction.begin();
-			Borrower borrower = manager.find(Borrower.class, id);
-			borrower.mName = name;
-			manager.persist(borrower);
+			Lender lender = manager.find(Lender.class, id);
+			lender.mName = name;
+			manager.persist(lender);
 			transaction.commit();
 		} catch (Exception ex) {
 			if (transaction != null) {

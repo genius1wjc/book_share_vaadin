@@ -1,7 +1,5 @@
 package my.vaadin.app;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import javax.servlet.annotation.WebServlet;
 
 import com.vaadin.annotations.Theme;
@@ -16,15 +14,8 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 import model.Borrower;
-import model.Student;
 import service.BorrowerService;
-import util.DbUtil;
 import util.StringUtils;
-
-import static constant.CommonConstants.ENTITY_MANAGER_FACTORY;
-import static service.StudentService.*;
-
-import java.util.List;
 
 /**
  * This UI is the application entry point. A UI may either represent a browser
@@ -64,7 +55,7 @@ public class MyUI extends UI {
 		});
 
 		submitButton.setCaption("Submit");
-		submitButton.setEnabled(false);
+//		submitButton.setEnabled(false);
 		submitButton.addClickListener(e -> validateUsernameAndPassword());
 
 		final VerticalLayout layout = new VerticalLayout();
@@ -79,8 +70,8 @@ public class MyUI extends UI {
 	}
 
 	private void validateUsernameAndPassword() {
-		List<Borrower> borrowers = BorrowerService.find("", "");
-		System.out.println(borrowers);
+		Borrower borrower = BorrowerService.find("genius1wjc", "admin");
+		System.out.println(borrower);
 	}
 
 	@WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
