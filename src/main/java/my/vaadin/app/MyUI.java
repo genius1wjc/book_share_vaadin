@@ -17,6 +17,8 @@ import com.vaadin.ui.VerticalLayout;
 
 import model.Borrower;
 import model.Student;
+import service.BorrowerService;
+import util.DbUtil;
 import util.StringUtils;
 
 import static constant.CommonConstants.ENTITY_MANAGER_FACTORY;
@@ -77,40 +79,8 @@ public class MyUI extends UI {
 	}
 
 	private void validateUsernameAndPassword() {
-		try {
-			List<Borrower> students = null;
-
-			EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
-			EntityTransaction transaction = null;
-
-			try {
-				transaction = manager.getTransaction();
-				transaction.begin();
-
-				students = manager.createQuery("SELECT s FROM Borrower s", Borrower.class).getResultList();
-
-				transaction.commit();
-			} catch (Exception ex) {
-				if (transaction != null) {
-					transaction.rollback();
-				}
-				ex.printStackTrace();
-			} finally {
-				manager.close();
-			}
-			if (students != null) {
-				for (Borrower student : students) {
-					System.out.println(student);
-				}
-			}
-
-		} catch (Exception e) {
-			System.out.println("Exception");
-			e.printStackTrace();
-
-		} finally {
-			closeDb();
-		}
+		List<Borrower> borrowers = BorrowerService.find("", "");
+		System.out.println(borrowers);
 	}
 
 	@WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)

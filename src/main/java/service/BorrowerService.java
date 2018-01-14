@@ -4,38 +4,31 @@ import static constant.CommonConstants.ENTITY_MANAGER_FACTORY;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
-import model.Student;
+import model.Borrower;
 
-public final class StudentService {
+public final class BorrowerService {
 
-	private StudentService() {
+	private BorrowerService() {
 		// Prevent instantiation of this class
 	}
 
 	/**
-	 * Create a new Student.
-	 * 
-	 * @param name
-	 * @param age
+	 * Create a new Borrower.
 	 */
-	public static void create(int id, String name, int age) {
+	public static void create(long id, @Nonnull String email, @Nonnull String name, @Nonnull String username,
+			@Nonnull String password) {
 		EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
 		EntityTransaction transaction = null;
 
 		try {
 			transaction = manager.getTransaction();
 			transaction.begin();
-
-			Student stu = new Student();
-			stu.id = id;
-			stu.name = name;
-			stu.age = age;
-
-			manager.persist(stu);
-
+			Borrower borrower = new Borrower(id, email, name, username, password);
+			manager.persist(borrower);
 			transaction.commit();
 		} catch (Exception ex) {
 			if (transaction != null) {
@@ -48,13 +41,13 @@ public final class StudentService {
 	}
 
 	/**
-	 * Read all the Students.
+	 * Find a borrower by username and password.
 	 * 
-	 * @return a List of Students
+	 * @return a List of Borrowers
 	 */
-	public static List<Student> readAll() {
+	public static List<Borrower> find(@Nonnull String username, @Nonnull String password) {
 
-		List<Student> students = null;
+		List<Borrower> borrowers = null;
 
 		EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
 		EntityTransaction transaction = null;
@@ -62,9 +55,7 @@ public final class StudentService {
 		try {
 			transaction = manager.getTransaction();
 			transaction.begin();
-
-			students = manager.createQuery("SELECT s FROM Student s", Student.class).getResultList();
-
+			borrowers = manager.createQuery("SELECT b FROM Borrower b WHERE b.mUsername = 'genius1wjc'", Borrower.class).getResultList();
 			transaction.commit();
 		} catch (Exception ex) {
 			if (transaction != null) {
@@ -74,11 +65,11 @@ public final class StudentService {
 		} finally {
 			manager.close();
 		}
-		return students;
+		return borrowers;
 	}
 
 	/**
-	 * Delete the existing Student.
+	 * Delete the existing Borrower.
 	 * 
 	 * @param id
 	 */
@@ -89,11 +80,8 @@ public final class StudentService {
 		try {
 			transaction = manager.getTransaction();
 			transaction.begin();
-
-			Student stu = manager.find(Student.class, id);
-
-			manager.remove(stu);
-
+			Borrower borrower = manager.find(Borrower.class, id);
+			manager.remove(borrower);
 			transaction.commit();
 		} catch (Exception ex) {
 			if (transaction != null) {
@@ -106,27 +94,21 @@ public final class StudentService {
 	}
 
 	/**
-	 * Update the existing Student.
+	 * Update the existing Borrower.
 	 * 
 	 * @param id
 	 * @param name
-	 * @param age
 	 */
-	public static void update(int id, String name, int age) {
+	public static void update(int id, @Nonnull String name) {
 		EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
 		EntityTransaction transaction = null;
 
 		try {
 			transaction = manager.getTransaction();
 			transaction.begin();
-
-			Student stu = manager.find(Student.class, id);
-
-			stu.name = name;
-			stu.age = age;
-
-			manager.persist(stu);
-
+			Borrower borrower = manager.find(Borrower.class, id);
+			borrower.mName = name;
+			manager.persist(borrower);
 			transaction.commit();
 		} catch (Exception ex) {
 			if (transaction != null) {

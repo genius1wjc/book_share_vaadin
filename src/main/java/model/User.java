@@ -12,10 +12,10 @@ import javax.persistence.MappedSuperclass;
 public abstract class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id")
+	@Column(name = "id")
 	public Long mId;
 
 	@Column(name = "email", nullable = false)
@@ -23,7 +23,7 @@ public abstract class User implements Serializable {
 
 	@Column(name = "name", nullable = false)
 	public String mName;
-	
+
 	@Column(name = "username", nullable = false)
 	public String mUsername;
 

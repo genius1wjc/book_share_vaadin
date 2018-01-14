@@ -1,2 +1,2 @@
 vaadin
-init
+inithibernate
