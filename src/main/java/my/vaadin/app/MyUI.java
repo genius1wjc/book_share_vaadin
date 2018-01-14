@@ -1,21 +1,25 @@
 package my.vaadin.app;
 
+import javax.annotation.Nonnull;
 import javax.servlet.annotation.WebServlet;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
+import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 import model.Borrower;
+import model.Lender;
 import service.BorrowerService;
-import util.StringUtils;
+import service.LenderService;
 
 /**
  * This UI is the application entry point. A UI may either represent a browser
@@ -34,8 +38,11 @@ public class MyUI extends UI {
 	private TextField usernameText = new TextField();
 	private PasswordField passwordText = new PasswordField();
 	private Button submitButton = new Button();
+	private Label loginStatus = new Label();
 
+	@Nonnull
 	private String username = "";
+	@Nonnull
 	private String password = "";
 
 	@Override
@@ -48,30 +55,52 @@ public class MyUI extends UI {
 		});
 
 		passwordText.setPlaceholder("enter password");
-		passwordText.setValueChangeMode(ValueChangeMode.LAZY);
+		passwordText.setValueChangeMode(ValueChangeMode.EAGER);
 		passwordText.addValueChangeListener(e -> {
 			password = e.getValue();
 			checkAndEnableSubmitButton();
 		});
 
 		submitButton.setCaption("Submit");
-//		submitButton.setEnabled(false);
-		submitButton.addClickListener(e -> validateUsernameAndPassword());
+		submitButton.setEnabled(false);
+		submitButton.setClickShortcut(KeyCode.ENTER);
+		submitButton.addClickListener(e -> {
+			boolean success = validateUsernameAndPassword();
+			if (!success) {
+				loginStatus.setValue("Login failed, try again");
+			} else {
+				loginStatus.setValue("Login succeeded");
+			}
+			loginStatus.setVisible(true);
+		});
+
+		loginStatus.setVisible(false);
 
 		final VerticalLayout layout = new VerticalLayout();
-		layout.addComponents(usernameText, passwordText, submitButton);
+		layout.addComponents(usernameText, passwordText, submitButton, loginStatus);
 		setContent(layout);
 	}
 
 	private void checkAndEnableSubmitButton() {
-		if (!StringUtils.isNullOrEmpty(username) && !StringUtils.isNullOrEmpty(password)) {
+		if (!username.isEmpty() && !password.isEmpty()) {
 			submitButton.setEnabled(true);
 		}
 	}
 
-	private void validateUsernameAndPassword() {
-		Borrower borrower = BorrowerService.find("genius1wjc", "admin");
-		System.out.println(borrower);
+	/**
+	 * @return true if we found the user by the username and password.
+	 */
+	private boolean validateUsernameAndPassword() {
+		Borrower borrower = BorrowerService.find(username, password);
+		if (borrower != null) {
+			return true;
+		} else {
+			Lender lender = LenderService.find(username, password);
+			if (lender != null) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
