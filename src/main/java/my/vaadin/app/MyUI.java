@@ -1,5 +1,7 @@
 package my.vaadin.app;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.servlet.annotation.WebServlet;
 
 import com.vaadin.annotations.Theme;
@@ -13,9 +15,11 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
+import model.Borrower;
 import model.Student;
 import util.StringUtils;
 
+import static constant.CommonConstants.ENTITY_MANAGER_FACTORY;
 import static service.StudentService.*;
 
 import java.util.List;
@@ -74,9 +78,28 @@ public class MyUI extends UI {
 
 	private void validateUsernameAndPassword() {
 		try {
-			List<Student> students = readAll();
+			List<Borrower> students = null;
+
+			EntityManager manager = ENTITY_MANAGER_FACTORY.createEntityManager();
+			EntityTransaction transaction = null;
+
+			try {
+				transaction = manager.getTransaction();
+				transaction.begin();
+
+				students = manager.createQuery("SELECT s FROM Borrower s", Borrower.class).getResultList();
+
+				transaction.commit();
+			} catch (Exception ex) {
+				if (transaction != null) {
+					transaction.rollback();
+				}
+				ex.printStackTrace();
+			} finally {
+				manager.close();
+			}
 			if (students != null) {
-				for (Student student : students) {
+				for (Borrower student : students) {
 					System.out.println(student);
 				}
 			}
