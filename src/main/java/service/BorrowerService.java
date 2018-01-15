@@ -5,6 +5,7 @@ import static constant.CommonConstants.ENTITY_MANAGER_FACTORY;
 import javax.annotation.Nonnull;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import model.Borrower;
@@ -33,7 +34,6 @@ public final class BorrowerService {
 			if (transaction != null) {
 				transaction.rollback();
 			}
-			ex.printStackTrace();
 		} finally {
 			manager.close();
 		}
@@ -64,7 +64,9 @@ public final class BorrowerService {
 			if (transaction != null) {
 				transaction.rollback();
 			}
-			ex.printStackTrace();
+			if (!(ex instanceof NoResultException)) {
+				ex.printStackTrace();
+			}
 		} finally {
 			manager.close();
 		}

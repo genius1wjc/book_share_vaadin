@@ -3,8 +3,6 @@ package util;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.annotation.Nonnull;
 
@@ -15,8 +13,7 @@ import service.LenderService;
 
 public final class LoginUtil {
 
-	Map<String, String> DB = new HashMap<String, String>();
-	public static final String SALT = "book-ninja-salt";
+	private static final String SALT = "book-ninja-salt";
 
 	private LoginUtil() {
 		// Prevent instantiation of this class
@@ -27,7 +24,9 @@ public final class LoginUtil {
 	 */
 	public static boolean validateUsernameAndPassword(@Nonnull String username, @Nonnull String password) {
 		String saltedPassword = SALT + password;
+		System.out.println(saltedPassword);
 		String hashedPassword = generateHash(saltedPassword);
+		System.out.println(hashedPassword);
 		Borrower borrower = BorrowerService.find(username, hashedPassword);
 		if (borrower != null) {
 			return true;

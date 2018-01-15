@@ -16,10 +16,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
-import model.Borrower;
-import model.Lender;
-import service.BorrowerService;
-import service.LenderService;
+import util.LoginUtil;
 
 /**
  * This UI is the application entry point. A UI may either represent a browser
@@ -41,23 +38,23 @@ public class MyUI extends UI {
 	private Label loginStatus = new Label();
 
 	@Nonnull
-	private String username = "";
+	private String mUsername = "";
 	@Nonnull
-	private String password = "";
+	private String mPassword = "";
 
 	@Override
 	protected void init(VaadinRequest vaadinRequest) {
 		usernameText.setPlaceholder("enter username");
 		usernameText.setValueChangeMode(ValueChangeMode.LAZY);
 		usernameText.addValueChangeListener(e -> {
-			username = e.getValue();
+			mUsername = e.getValue();
 			checkAndEnableSubmitButton();
 		});
 
 		passwordText.setPlaceholder("enter password");
 		passwordText.setValueChangeMode(ValueChangeMode.EAGER);
 		passwordText.addValueChangeListener(e -> {
-			password = e.getValue();
+			mPassword = e.getValue();
 			checkAndEnableSubmitButton();
 		});
 
@@ -65,7 +62,7 @@ public class MyUI extends UI {
 		submitButton.setEnabled(false);
 		submitButton.setClickShortcut(KeyCode.ENTER);
 		submitButton.addClickListener(e -> {
-			boolean success = validateUsernameAndPassword();
+			boolean success = LoginUtil.validateUsernameAndPassword(mUsername, mPassword);
 			if (!success) {
 				loginStatus.setValue("Login failed, try again");
 			} else {
@@ -82,25 +79,9 @@ public class MyUI extends UI {
 	}
 
 	private void checkAndEnableSubmitButton() {
-		if (!username.isEmpty() && !password.isEmpty()) {
+		if (!mUsername.isEmpty() && !mPassword.isEmpty()) {
 			submitButton.setEnabled(true);
 		}
-	}
-
-	/**
-	 * @return true if we found the user by the username and password.
-	 */
-	private boolean validateUsernameAndPassword() {
-		Borrower borrower = BorrowerService.find(username, password);
-		if (borrower != null) {
-			return true;
-		} else {
-			Lender lender = LenderService.find(username, password);
-			if (lender != null) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	@WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
