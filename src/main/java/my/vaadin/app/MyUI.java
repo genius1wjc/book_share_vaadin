@@ -1,22 +1,16 @@
 package my.vaadin.app;
 
-import javax.annotation.Nonnull;
 import javax.servlet.annotation.WebServlet;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
-import com.vaadin.event.ShortcutAction.KeyCode;
+import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.shared.ui.ValueChangeMode;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.PasswordField;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
 
-import util.LoginUtil;
+import view.LocationView;
+import view.LoginView;
 
 /**
  * This UI is the application entry point. A UI may either represent a browser
@@ -31,57 +25,15 @@ import util.LoginUtil;
 public class MyUI extends UI {
 
 	private static final long serialVersionUID = 1L;
-
-	private TextField usernameText = new TextField();
-	private PasswordField passwordText = new PasswordField();
-	private Button submitButton = new Button();
-	private Label loginStatus = new Label();
-
-	@Nonnull
-	private String mUsername = "";
-	@Nonnull
-	private String mPassword = "";
+	
+	public static final String LOCATION_VIEW = "location_view";
 
 	@Override
 	protected void init(VaadinRequest vaadinRequest) {
-		usernameText.setPlaceholder("enter username");
-		usernameText.setValueChangeMode(ValueChangeMode.LAZY);
-		usernameText.addValueChangeListener(e -> {
-			mUsername = e.getValue();
-			checkAndEnableSubmitButton();
-		});
-
-		passwordText.setPlaceholder("enter password");
-		passwordText.setValueChangeMode(ValueChangeMode.EAGER);
-		passwordText.addValueChangeListener(e -> {
-			mPassword = e.getValue();
-			checkAndEnableSubmitButton();
-		});
-
-		submitButton.setCaption("Submit");
-		submitButton.setEnabled(false);
-		submitButton.setClickShortcut(KeyCode.ENTER);
-		submitButton.addClickListener(e -> {
-			boolean success = LoginUtil.validateUsernameAndPassword(mUsername, mPassword);
-			if (!success) {
-				loginStatus.setValue("Login failed, try again");
-			} else {
-				loginStatus.setValue("Login succeeded");
-			}
-			loginStatus.setVisible(true);
-		});
-
-		loginStatus.setVisible(false);
-
-		final VerticalLayout layout = new VerticalLayout();
-		layout.addComponents(usernameText, passwordText, submitButton, loginStatus);
-		setContent(layout);
-	}
-
-	private void checkAndEnableSubmitButton() {
-		if (!mUsername.isEmpty() && !mPassword.isEmpty()) {
-			submitButton.setEnabled(true);
-		}
+		getPage().setTitle("Book Share Ninja");
+		Navigator navigator = new Navigator(this, this);
+		navigator.addView("", new LoginView());
+		navigator.addView(LOCATION_VIEW, new LocationView());
 	}
 
 	@WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
