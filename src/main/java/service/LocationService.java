@@ -15,7 +15,7 @@ import model.Location;
 
 public final class LocationService {
 
-	private static final String DB_LOCATION = "/Users/jiechao/eclipse-workspace/app/asset/GeoLite2-City_20180102/GeoLite2-City.mmdb";
+	private static final String DB_LOCATION = "asset/GeoLite2-City_20180102/GeoLite2-City.mmdb";
 	private static final String AWS_CHECKIP_SERVICE = "http://checkip.amazonaws.com";
 
 	private LocationService() {
