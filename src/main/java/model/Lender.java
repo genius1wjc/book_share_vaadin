@@ -1,9 +1,6 @@
 package model;
 
-import java.util.List;
-
 import javax.annotation.Nonnull;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
