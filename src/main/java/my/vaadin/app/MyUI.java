@@ -37,15 +37,12 @@ public class MyUI extends UI {
 	@Override
 	protected void init(VaadinRequest vaadinRequest) {
 		try {
-			File directory = new File("logs");
-			if (!directory.exists()) {
-				directory.mkdir();
-			}
+			new File("logs").mkdir();
 			FileHandler handler = new FileHandler("logs/Logging.txt");
 			handler.setFormatter(new LogFormatter(MyUI.class.getName()));
 			LOGGER.addHandler(handler);
 			LOGGER.log(Level.SEVERE, "Hello world!");
-			
+
 			getPage().setTitle("Book Share Ninja");
 			Navigator navigator = new Navigator(this, this);
 			// "" is required to make LoginView as the starting view
