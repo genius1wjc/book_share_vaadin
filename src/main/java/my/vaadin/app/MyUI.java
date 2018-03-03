@@ -1,7 +1,5 @@
 package my.vaadin.app;
 
-import java.io.File;
-import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -14,7 +12,6 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.UI;
 
-import logging.LogFormatter;
 import view.LocationView;
 import view.LoginView;
 
@@ -31,25 +28,18 @@ import view.LoginView;
 public class MyUI extends UI {
 
 	private static final long serialVersionUID = 1L;
-	private static final Logger LOGGER = Logger.getLogger(MyUI.class.getName());
 	public static final String LOCATION_VIEW = "location_view";
 
 	@Override
 	protected void init(VaadinRequest vaadinRequest) {
 		try {
-			new File("logs").mkdir();
-			FileHandler handler = new FileHandler("logs/Logging.txt");
-			handler.setFormatter(new LogFormatter(MyUI.class.getName()));
-			LOGGER.addHandler(handler);
-			LOGGER.log(Level.SEVERE, "Hello world!");
-
 			getPage().setTitle("Book Share Ninja");
 			Navigator navigator = new Navigator(this, this);
 			// "" is required to make LoginView as the starting view
 			navigator.addView("", new LoginView());
 			navigator.addView(LOCATION_VIEW, new LocationView());
 		} catch (Exception e) {
-			LOGGER.log(Level.SEVERE, "Encountered exception in MyUI init:", e);
+			Logger.getLogger(MyUI.class.getName()).log(Level.SEVERE, "Encountered exception in init:", e);
 		}
 	}
 
