@@ -1,7 +1,6 @@
 package my.vaadin.app;
 
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.servlet.annotation.WebServlet;
 
@@ -12,6 +11,7 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.UI;
 
+import logging.LogUtil;
 import view.LocationView;
 import view.LoginView;
 
@@ -39,7 +39,7 @@ public class MyUI extends UI {
 			navigator.addView("", new LoginView());
 			navigator.addView(LOCATION_VIEW, new LocationView());
 		} catch (Exception e) {
-			Logger.getLogger(MyUI.class.getName()).log(Level.SEVERE, "Encountered exception in init:", e);
+			LogUtil.getLogger(MyUI.class.getName()).log(Level.SEVERE, "Encountered exception in init:", e);
 		}
 	}
 
