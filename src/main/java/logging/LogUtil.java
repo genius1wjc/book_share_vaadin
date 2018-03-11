@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 
 public final class LogUtil {
 
-	private static final String LOGGING_FOLDER = "app-logs";
+	private static final String LOGGING_FOLDER = "application-logs";
 
 	private LogUtil() {
 		// Disable instantiation

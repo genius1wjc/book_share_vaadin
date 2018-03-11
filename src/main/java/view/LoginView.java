@@ -14,7 +14,6 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
 import my.vaadin.app.MyUI;
-import util.LoginUtil;
 
 public class LoginView extends VerticalLayout implements View {
 
@@ -51,7 +50,9 @@ public class LoginView extends VerticalLayout implements View {
 		submitButton.setEnabled(false);
 		submitButton.setClickShortcut(KeyCode.ENTER);
 		submitButton.addClickListener(e -> {
-			boolean success = LoginUtil.validateUsernameAndPassword(mUsername, mPassword);
+//			boolean success = LoginUtil.validateUsernameAndPassword(mUsername, mPassword);
+			// Disable checking with db until we figure out the issue
+			boolean success = true;
 			if (!success) {
 				loginStatus.setValue("Login failed, try again");
 			} else {
